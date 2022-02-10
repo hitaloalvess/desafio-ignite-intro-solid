@@ -1,0 +1,343 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Introdução ao S.O.L.I.D",
+        "description": "Desafio ignite do chapter 2",
+        "version": "1.0.0",
+        "contact": {
+            "email": "hitalo.ralves@outlook.com"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Created user",
+                "description": "Create new user",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Hitalo R Alves",
+                                    "email": "teste@teste.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "Date"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date"
+                                        }
+                                    },
+                                    "example": {
+                                        "id": "a32d8169-56ef-4d48-a2c1-a595ff748116",
+                                        "name": "Hitalo R Alves",
+                                        "email": "teste@teste.com",
+                                        "admin": false,
+                                        "created_at": "2022-02-10T16:47:32.992Z",
+                                        "updated_at": "2022-02-10T16:47:32.992Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "User already exists"
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            },
+            "get": {
+                "tags": ["User"],
+                "summary": "List users",
+                "description": "List all users",
+                "parameters": [{
+                    "in": "header",
+                    "name": "user_id",
+                    "description": "Id user",
+                    "required": "true",
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success realized operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "properties": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "admin": {
+                                                    "type": "boolean"
+                                                },
+                                                "created_at": {
+                                                    "type": "Date"
+                                                },
+                                                "updated_at": {
+                                                    "type": "Date"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": [{
+                                            "id": "a32d8169-56ef-4d48-a2c1-a595ff748116",
+                                            "name": "Hitalo R Alves",
+                                            "email": "teste@teste.com",
+                                            "admin": false,
+                                            "created_at": "2022-02-10T16:47:32.992Z",
+                                            "updated_at": "2022-02-10T16:47:32.992Z"
+                                        },
+                                        {
+                                            "id": "a32d8169-56ef-4d48-a2c1-a595ff748116",
+                                            "name": "Hitalo R Alves",
+                                            "email": "teste@teste.com",
+                                            "admin": false,
+                                            "created_at": "2022-02-10T16:47:32.992Z",
+                                            "updated_at": "2022-02-10T16:47:32.992Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User without permission or User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "You need to be an administrator to list all users"
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        },
+        "/users/:user_id/admin": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Turn user admin",
+                "description": "Turn user into admin",
+                "parameters": [{
+                    "in": "route",
+                    "name": "user_id",
+                    "description": "Id user",
+                    "required": "true",
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success realized operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "Date"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date"
+                                        }
+                                    },
+                                    "example": {
+                                        "id": "a32d8169-56ef-4d48-a2c1-a595ff748116",
+                                        "name": "Hitalo R Alves",
+                                        "email": "teste@teste.com",
+                                        "admin": true,
+                                        "created_at": "2022-02-10T16:47:32.992Z",
+                                        "updated_at": "2022-02-10T16:47:32.992Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User not registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "User not registered"
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        },
+        "/users/:user_id": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Show user profile",
+                "description": "Show user profile",
+                "parameters": [{
+                    "in": "route",
+                    "name": "user_id",
+                    "description": "Id user",
+                    "required": "true",
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success realized operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "Date"
+                                        },
+                                        "updated_at": {
+                                            "type": "Date"
+                                        }
+                                    },
+                                    "example": {
+                                        "id": "a32d8169-56ef-4d48-a2c1-a595ff748116",
+                                        "name": "Hitalo R Alves",
+                                        "email": "teste@teste.com",
+                                        "admin": false,
+                                        "created_at": "2022-02-10T16:47:32.992Z",
+                                        "updated_at": "2022-02-10T16:47:32.992Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "error": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "User not registered"
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
